@@ -30,7 +30,7 @@ def main():
 
         # Display the image in the third column
         with col2:
-            logo_path = r"fractal-logo.jpg"
+            logo_path = r"fractal-logo.png"
             logo_image = Image.open(logo_path)
             logo_resized = logo_image.resize((300, 100))
             st.image(logo_resized, use_column_width=False)
