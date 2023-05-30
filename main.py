@@ -38,6 +38,7 @@ def main():
         with col3:
             st.empty()
 
+    st.subheader('Data Analysis using Dolly')
 
     # Apply CSS to center align the image
     st.markdown(
@@ -82,7 +83,7 @@ def main():
     # Display output text area
     output = ""
     output_slot = st.empty()
-    text = output_slot.text_area('Text to analyze')
+    text = output_slot.text_area('Output')
 
     # Button to refresh output, update output, and invoke Collibra APIs
     with st.container():
@@ -92,7 +93,7 @@ def main():
         # Button to refresh output
         if col2.button("Refresh"):
             output = refresh_output()
-            output_slot.text_area('Text to analyze',value=output)
+            output_slot.text_area('Output',value=output)
 
         # Button to update output in Excel file
         if col3.button("Update"):
