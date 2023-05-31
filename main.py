@@ -5,8 +5,6 @@ from PIL import Image
 from util import *
 from collibra import *
 
-
-
 def main():
     # Set page layout to center aligned
     st.markdown(
@@ -23,7 +21,7 @@ def main():
         unsafe_allow_html=True
     )
     with st.container():
-        col1, col2, col3 = st.columns([3, 5, 3])
+        col1, col2, col3 = st.columns([1, 2, 1])
 
         with col1:
             st.empty()
@@ -32,13 +30,26 @@ def main():
         with col2:
             logo_path = r"fractal-logo.png"
             logo_image = Image.open(logo_path)
-            logo_resized = logo_image.resize((300, 100))
+            logo_resized = logo_image.resize((298, 100))
             st.image(logo_resized, use_column_width=False)
 
         with col3:
             st.empty()
 
-    st.subheader('Data Analysis using Dolly')
+    with st.container():
+        col1, col2, col3 = st.columns([1, 2, 1])
+
+        with col1:
+            st.empty()
+
+        # Display the text in the third column
+        with col2:
+            st.subheader('Data Analysis using Dolly')
+
+        with col3:
+            st.empty()
+
+
 
     # Apply CSS to center align the image
     st.markdown(
@@ -88,6 +99,7 @@ def main():
     # Button to refresh output, update output, and invoke Collibra APIs
     with st.container():
         col1, col2, col3, col4, col5 = st.columns([1, 2, 2, 2, 1])
+        new_string = ""
         with col1:
             st.empty()
         # Button to refresh output
@@ -95,11 +107,13 @@ def main():
             output = refresh_output()
             output_slot.text_area('Output',value=output)
 
+       # new_string = output_slot.text_area('Output')
+
         # Button to update output in Excel file
         if col3.button("Update"):
-            updated_text = output_slot
+            updated_text =new_string
             if updated_text:
-                tupdate = update_answer(text)
+                tupdate = update_answer(updated_text)
                 st.success(tupdate)
             else:
                 st.warning("Please enter some text")

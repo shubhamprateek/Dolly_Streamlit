@@ -71,7 +71,7 @@ def Patch():
 
     # Read the outputs
     outs = pd.read_excel(r"C:\Users\shubham.prateek\Downloads\example.xlsx")
-    print(outs)
+    #print(outs)
     # generate input structure
     df = pd.DataFrame(["t_product"], columns=['Column Name'])
     # Stores the assets UUID
@@ -79,7 +79,9 @@ def Patch():
         df.loc[i, "Column Uuid"] = searchAssetUuid(df.loc[i, "Column Name"], domainId)
 
     if (outs.loc[0, "input"].find("technical") >= 0):
+        print('hi')
         df["Tag"] = [outs.loc[0, "output"]]
+        print(outs.loc[0, "output"])
         # Patch the df info to the respective assets in DGC
         word_list = df.iloc[0, 2].split(" ")
         print(word_list)
