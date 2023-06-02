@@ -1,9 +1,16 @@
 import openpyxl
 import os
 from collibra import *
+#from dolly_colab_file import *
+import torch
+from transformers import pipeline
+import json
+import pandas as pd
+
+
 def submit_prompt(prompt):
-    insert_prompt_into_excel(prompt)
-    return 'Prompt Saved Successfully'
+    ans = "" #fn_without_data(prompt)
+    return ans
 
 def update_answer(prompt):
     update_answer_into_excel(prompt)
@@ -113,3 +120,9 @@ def Patch():
     print(type(df["Column Uuid"]))
     runApprovalWF(df["Column Uuid"].tolist())
     return attributeTypeId
+
+import time
+
+def delayed_return():
+    time.sleep(5)  # Wait for 5 seconds
+    return "Delayed return after 5 seconds"

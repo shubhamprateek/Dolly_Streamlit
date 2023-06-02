@@ -4,8 +4,38 @@ import os
 from PIL import Image
 from util import *
 from collibra import *
+import time
+import torch
+from transformers import pipeline
+import json
+
+answer = ""
+generate_text_3 = None
+
 
 def main():
+    global answer
+    global generate_text_3
+    # Load the Model
+    model_path = "\dolly-v2-7b"
+    with st.spinner("Loading model..."):
+        # Load the Model
+        generate_text_3 = pipeline(model=model_path, torch_dtype=torch.bfloat16, trust_remote_code=True,
+                                   device_map="auto")
+        # delayed_return()
+    # Once the model is loaded, remove the spinner and display the UI
+    st.spinner()
+
+    def dolly_gen(prompt):
+        res = generate_text_3(prompt)
+        return res[0]["generated_text"]
+
+    def fn_without_data(prompt):
+        question = str(prompt)
+
+        ans = dolly_gen(question)
+        return ans
+
     # Set page layout to center aligned
     st.markdown(
         """
@@ -49,8 +79,6 @@ def main():
         with col3:
             st.empty()
 
-
-
     # Apply CSS to center align the image
     st.markdown(
         """
@@ -84,34 +112,34 @@ def main():
         # Button to save input to Excel file
         if col3.button("Submit"):
             if text_input:
-                message = submit_prompt(text_input)
-                st.success(message)
+                print(text_input)
+                answer = fn_without_data(text_input)
+                print("After input : " + answer)
+                # st.success('Prompt Saved Successfully')
             else:
                 st.warning("Please enter some text")
         with col4:
             st.empty()
 
     # Display output text area
-    output = ""
+    print(answer + "middle")
     output_slot = st.empty()
-    text = output_slot.text_area('Output')
+    text = output_slot.text_area('Output', value=answer)
 
     # Button to refresh output, update output, and invoke Collibra APIs
     with st.container():
         col1, col2, col3, col4, col5 = st.columns([1, 2, 2, 2, 1])
-        new_string = ""
         with col1:
             st.empty()
         # Button to refresh output
         if col2.button("Refresh"):
-            output = refresh_output()
-            output_slot.text_area('Output',value=output)
+            pass
 
-       # new_string = output_slot.text_area('Output')
+        # new_string = output_slot.text_area('Output')
 
         # Button to update output in Excel file
         if col3.button("Update"):
-            updated_text =new_string
+            updated_text = ""
             if updated_text:
                 tupdate = update_answer(updated_text)
                 st.success(tupdate)
@@ -128,5 +156,7 @@ def main():
             st.empty()
 
 
+# return "Hello"
 if __name__ == "__main__":
+    # generate_text_3 = None
     main()
